@@ -1,4 +1,4 @@
-- name: Start the stopped test container
+- name: Create/Start the api-gateway container
   hosts: all
   gather_facts: false
   collections:
