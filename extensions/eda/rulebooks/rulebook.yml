@@ -9,6 +9,6 @@
     - name: launch playbook when start signal received
       condition: event.payload.command == "let's start"
       action:
-        run_playbook:
-          name: start_container.yml
-          # inventory: /home/ec2-user/inventory.yml
+        run_job_template:
+          name: StartContainer
+          organization: Default
