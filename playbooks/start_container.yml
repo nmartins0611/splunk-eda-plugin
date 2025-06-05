@@ -15,7 +15,7 @@
         publish:
           - "8180:8080"
           - "9016:9016"
-       env:
+        env:
           SPRING_PROFILES_ACTIVE: docker
           SPRING_JMX_ENABLED: "true"
           MANAGEMENT_METRICS_EXPORT_JMX_ENABLED: "true"
