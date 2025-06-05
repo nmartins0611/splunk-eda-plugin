@@ -11,4 +11,4 @@
       action:
         run_playbook:
           name: start_container.yml
-          inventory: /home/ec2-user/inventory.yml
+          # inventory: /home/ec2-user/inventory.yml
