@@ -4,8 +4,20 @@
   collections:
     - containers.podman
   tasks:
-    - name: Start test-container if it is stopped
+    - name: Start api-gateway container
       containers.podman.podman_container:
-        name: test-container
+        name: api-gateway
         image: docker.io/springcommunity/spring-petclinic-api-gateway:latest
         state: started
+        detach: true
+        network:
+          - petclinic-net
+        publish:
+          - "8180:8080"
+          - "9016:9016"
+       env:
+          SPRING_PROFILES_ACTIVE: docker
+          SPRING_JMX_ENABLED: "true"
+          MANAGEMENT_METRICS_EXPORT_JMX_ENABLED: "true"
+          MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
+          JAVA_TOOL_OPTIONS: "-Djava.rmi.server.hostname=127.0.0.1"
