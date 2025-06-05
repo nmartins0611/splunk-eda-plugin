@@ -1,7 +1,0 @@
-- hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Restart app
-      shell: "(echo 'running demo_playbook'; python3 demo_app.py)"
-      async: 10
-      poll: 0
