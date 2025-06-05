@@ -7,4 +7,5 @@
     - name: Start test-container if it is stopped
       containers.podman.podman_container:
         name: test-container
+        iamge: docker.io/springcommunity/spring-petclinic-api-gateway:latest
         state: started
