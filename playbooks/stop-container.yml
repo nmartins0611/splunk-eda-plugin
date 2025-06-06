@@ -4,12 +4,7 @@
   collections:
     - containers.podman
   tasks:
-  ---
-- name: List running Podman containers
-  hosts: all
-  become: false
-  tasks:
-  
+
     - name: Get running Podman containers
       containers.podman.podman_container_info:
         name: ""
