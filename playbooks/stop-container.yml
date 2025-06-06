@@ -12,8 +12,6 @@
     - name: Display running containers
       debug:
         msg: "Currently running Podman containers: {{ running_containers_output.containers | default([]) | map(attribute='name') | list }}"
-      # The 'containers' attribute holds details. We extract 'name' for display.
-      # default([]) handles cases where 'containers' might be undefined or empty.
 
   
     # - name: Start api-gateway container
