@@ -13,3 +13,8 @@
     - name: Display all containers basic list
       debug:
         msg: "{{ podman_all_basic.stdout_lines }}"
+
+    - name: Stop api-gateway container
+      containers.podman.podman_container:
+        name: api-gateway
+        state: stopped
