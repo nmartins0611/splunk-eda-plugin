@@ -1,11 +1,15 @@
-- name: Create/Start the api-gateway container
+---
+- name: List all Podman containers from all users
   hosts: all
-  gather_facts: false
-  collections:
-    - containers.podman
+  become: true
+  
   tasks:
-
-    - name: List running containers (basic format)
-      command: podman ps
-      register: podman_basic
+  
+    - name: List all containers (running and stopped) - basic format
+      command: podman ps -a --external
+      register: podman_all_basic
       changed_when: false
+
+    - name: Display all containers basic list
+      debug:
+        msg: "{{ podman_all_basic.stdout_lines }}"
