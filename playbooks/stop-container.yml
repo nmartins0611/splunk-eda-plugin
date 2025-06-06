@@ -9,25 +9,3 @@
       command: podman ps
       register: podman_basic
       changed_when: false
-
-    - name: Display basic container list
-      debug:
-        msg: "{{ podman_basic.stdout_lines }}"
-
-    - name: List running containers (detailed format)
-      command: podman ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}\t{{.Created}}"
-      register: podman_detailed
-      changed_when: false
-
-    - name: Display detailed container information
-      debug:
-        msg: "{{ podman_detailed.stdout_lines }}"
-
-    - name: Get container count
-      shell: podman ps -q | wc -l
-      register: container_count
-      changed_when: false
-
-    - name: Show running container count
-      debug:
-        msg: "Total running containers: {{ container_count.stdout }}"
