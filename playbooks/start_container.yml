@@ -20,4 +20,10 @@
           SPRING_JMX_ENABLED: "true"
           MANAGEMENT_METRICS_EXPORT_JMX_ENABLED: "true"
           MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
-          JAVA_TOOL_OPTIONS: "-Djava.rmi.server.hostname=127.0.0.1"
+          JAVA_TOOL_OPTIONS: >-
+            -Dcom.sun.management.jmxremote
+            -Dcom.sun.management.jmxremote.port=9016
+            -Dcom.sun.management.jmxremote.rmi.port=9016
+            -Dcom.sun.management.jmxremote.authenticate=false
+            -Dcom.sun.management.jmxremote.ssl=false
+            -Djava.rmi.server.hostname=127.0.0.1
