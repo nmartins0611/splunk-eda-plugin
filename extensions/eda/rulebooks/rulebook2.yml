@@ -7,7 +7,7 @@
         port: 5000
   rules:
     - name: launch playbook when start signal received
-      condition: event.payload.search_name == "test"
+      condition: event.payload.results.test == "hello"
       action:
         run_job_template:
           name: "Demo Job Template"
