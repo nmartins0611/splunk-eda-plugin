@@ -4,16 +4,46 @@
   collections:
     - containers.podman
   tasks:
-    - name: List all running Podman containers
-      community.general.podman_containers:
-        state: list
-      register: running_containers_output # Register the output to a variable
-
-    - name: Display running containers
-      debug:
-        msg: "Currently running Podman containers: {{ running_containers_output.containers | default([]) | map(attribute='name') | list }}"
-
+  ---
+- name: List running Podman containers
+  hosts: all
+  become: false
+  tasks:
   
+    - name: Get running Podman containers
+      containers.podman.podman_container_info:
+        name: ""
+      register: podman_containers
+
+    - name: Filter running containers
+      set_fact:
+        running_containers: "{{ podman_containers.containers | selectattr('State.Running', 'equalto', true) | list }}"
+
+    - name: Display running containers summary
+      debug:
+        msg: |
+          Container: {{ item.Name }}
+          Image: {{ item.Config.Image }}
+          Status: {{ item.State.Status }}
+          Created: {{ item.Created }}
+          Ports: {{ item.NetworkSettings.Ports | default({}) | dict2items | map(attribute='key') | join(', ') if item.NetworkSettings.Ports else 'None' }}
+      loop: "{{ running_containers }}"
+      when: running_containers | length > 0
+
+    - name: Show message when no containers are running
+      debug:
+        msg: "No running Podman containers found"
+      when: running_containers | length == 0
+
+    - name: Alternative method using command module
+      shell: podman ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+      register: podman_ps_output
+      changed_when: false
+
+    - name: Display podman ps output
+      debug:
+        var: podman_ps_output.stdout_lines
+        
     # - name: Start api-gateway container
     #   containers.podman.podman_container:
     #     name: api-gateway
