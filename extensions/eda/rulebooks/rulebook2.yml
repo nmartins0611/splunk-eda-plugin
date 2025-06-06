@@ -7,8 +7,8 @@
         port: 5000
   rules:
     - name: launch playbook when start signal received
-      condition: event.payload.source == "Mixed Alert"
+      condition: event.payload.search_name == "test"
       action:
         run_job_template:
-          name: StartContainer
+          name: "Demo Job Template"
           organization: Default
