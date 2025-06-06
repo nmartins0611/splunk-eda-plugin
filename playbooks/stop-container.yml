@@ -7,7 +7,7 @@
 
     - name: Get running Podman containers
       containers.podman.podman_container_info:
-        name: ""
+        name: "*"
       register: podman_containers
 
     - name: Filter running containers
