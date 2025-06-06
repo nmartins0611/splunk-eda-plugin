@@ -4,29 +4,16 @@
   collections:
     - containers.podman
   tasks:
-
-    - name: List running podman containers
-      command: podman ps
-      register: running_containers
-      changed_when: false
+    - name: List all running Podman containers
+      community.general.podman_containers:
+        state: list
+      register: running_containers_output # Register the output to a variable
 
     - name: Display running containers
       debug:
-        msg: "{{ running_containers.stdout_lines }}"
-        
-    - name: List all podman containers (including stopped)
-      command: podman ps -a
-      register: all_containers
-      changed_when: false
-      
-    - name: Display all containers
-      debug:
-        msg: "{{ all_containers.stdout_lines }}"
-        
-    - name: Get container details in JSON format
-      command: podman ps --format json
-      register: containers_json
-      changed_when: false
+        msg: "Currently running Podman containers: {{ running_containers_output.containers | default([]) | map(attribute='name') | list }}"
+      # The 'containers' attribute holds details. We extract 'name' for display.
+      # default([]) handles cases where 'containers' might be undefined or empty.
 
   
     # - name: Start api-gateway container
