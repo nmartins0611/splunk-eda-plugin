@@ -9,4 +9,4 @@
       register: podman_check
 
     - debug:
-        msg: {{ podman_check }}
+        msg: "{{ podman_check }}"
