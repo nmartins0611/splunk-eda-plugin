@@ -5,5 +5,5 @@
   tasks:
 
     - name: Alternative command-based check
-      command: podman ps --filter name=api-gateway --format "{{.Names}}\t{{.Status}}"
+      command: podman ps -q --filter name=api-gateway
       register: podman_check
