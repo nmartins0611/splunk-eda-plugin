@@ -5,15 +5,6 @@
   
   tasks:
   
-    - name: List all containers (running and stopped) - basic format
-      command: podman ps -a --external
-      register: podman_all_basic
-      changed_when: false
-
-    - name: Display all containers basic list
-      debug:
-        msg: "{{ podman_all_basic.stdout_lines }}"
-
     - name: Stop api-gateway container
       containers.podman.podman_container:
         name: api-gateway
