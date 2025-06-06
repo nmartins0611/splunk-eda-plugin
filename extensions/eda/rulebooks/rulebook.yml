@@ -15,7 +15,7 @@
     #       organization: Default
 
     - name: launch playbook when start signal received
-      condition: event.payload.event_info.event_source == "Mixed alert"
+      condition: event.payload.event_source == "Mixed alert"
       action:
         run_job_template:
           name: StartContainer
