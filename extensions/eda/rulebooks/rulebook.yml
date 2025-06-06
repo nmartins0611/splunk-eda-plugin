@@ -6,6 +6,14 @@
         host: 0.0.0.0
         port: 5000
   rules:
+
+    - name: launch playbook when start signal received
+      condition: event.payload.alert_details.alert_level == "6"
+      action:
+        run_job_template:
+          name: StartContainer
+          organization: Default
+
     - name: launch playbook when start signal received
       condition: event.payload.alert_level == "6"
       action:
