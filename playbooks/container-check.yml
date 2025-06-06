@@ -7,11 +7,3 @@
     - name: Alternative command-based check
       command: podman ps --filter name=api-gateway --format "{{.Names}}\t{{.Status}}"
       register: podman_check
-      changed_when: false
-      ignore_errors: true
-
-    - name: Display command output
-      debug:
-        msg: |
-          Command result: {{ podman_check.stdout if podman_check.stdout else 'Container not found in running containers' }}
-          Return code: {{ podman_check.rc }}
