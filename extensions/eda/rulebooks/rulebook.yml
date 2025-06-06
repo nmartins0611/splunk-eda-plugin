@@ -7,12 +7,12 @@
         port: 5000
   rules:
 
-    # - name: launch playbook when start signal received
-    #   condition: event.payload.alert_details.alert_level == "6"
-    #   action:
-    #     run_job_template:
-    #       name: StartContainer
-    #       organization: Default
+    - name: launch playbook when start signal received
+      condition: event.payload._bkt == "itsi_grouped_alerts~0~0ED494E3-1C6A-44F1-B425-0F734103DFA0"
+      action:
+        run_job_template:
+          name: StartContainer
+          organization: Default
 
     - name: launch playbook when start signal received
       condition: event.payload.event_source == "Mixed alert"
