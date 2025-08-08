@@ -10,7 +10,11 @@
     - name: launch playbook when start signal received 1
       condition: event.payload.title == "KPI Alerts from Service: visits-service"
       throttle:
-          once_within: 5 minutes
+        group_by_attributes:
+          - event.service_title      # "visits-service"
+          - event.kpi_title          # "Visits Created"
+          - event.itsiSeverity       # "critical"
+        once_within: "10m"
       action:
         run_job_template:
           name: StartContainer
