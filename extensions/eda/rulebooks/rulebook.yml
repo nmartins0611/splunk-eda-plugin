@@ -8,7 +8,7 @@
   rules:
 
     - name: launch playbook when start signal received 1
-      condition: event.payload._bkt == "itsi_grouped_alerts~0~0ED494E3-1C6A-44F1-B425-0F734103DFA0"
+      condition: event.payload.severity_label == "critical"
       action:
         run_job_template:
           name: StartContainer
