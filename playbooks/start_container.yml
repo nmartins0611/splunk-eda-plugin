@@ -4,26 +4,27 @@
   collections:
     - containers.podman
   tasks:
-    - name: Start api-gateway container
-      containers.podman.podman_container:
-        name: api-gateway
-        image: docker.io/springcommunity/spring-petclinic-api-gateway:latest
-        state: started
-        detach: true
-        network:
-          - petclinic-net
-        publish:
-          - "8180:8080"
-          - "9016:9016"
-        env:
-          SPRING_PROFILES_ACTIVE: docker
-          SPRING_JMX_ENABLED: "true"
-          MANAGEMENT_METRICS_EXPORT_JMX_ENABLED: "true"
-          MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
-          JAVA_TOOL_OPTIONS: >-
-            -Dcom.sun.management.jmxremote
-            -Dcom.sun.management.jmxremote.port=9016
-            -Dcom.sun.management.jmxremote.rmi.port=9016
-            -Dcom.sun.management.jmxremote.authenticate=false
-            -Dcom.sun.management.jmxremote.ssl=false
-            -Djava.rmi.server.hostname=127.0.0.1
+   - name: Run api-gateway container with podman
+     containers.podman.podman_container:
+      name: api-gateway
+      image: docker.io/springcommunity/spring-petclinic-api-gateway:latest
+      state: started
+      replace: true
+      detach: true
+      network: petclinic-net
+      ports:
+        - "8180:8080"
+        - "9016:9016"
+      env:
+        SPRING_PROFILES_ACTIVE: docker
+        SPRING_JMX_ENABLED: "true"
+        MANAGEMENT_METRICS_EXPORT_JMX_ENABLED: "true"
+        MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
+        JAVA_TOOL_OPTIONS: >-
+          -Dcom.sun.management.jmxremote
+          -Dcom.sun.management.jmxremote.port=9016
+          -Dcom.sun.management.jmxremote.rmi.port=9016
+          -Dcom.sun.management.jmxremote.authenticate=false
+          -Dcom.sun.management.jmxremote.ssl=false
+          -Djava.rmi.server.hostname=127.0.0.1
+     become: true
