@@ -1,25 +1,28 @@
 - name: Start container on webhook event
   hosts: localhost
   gather_facts: false
+
   sources:
     - ansible.eda.webhook:
         host: 0.0.0.0
         port: 5000
+
   rules:
 
     - name: launch playbook when start signal received 1
       condition: event.payload.title == "KPI Alerts from Service: visits-service"
       throttle:
         group_by_attributes:
-          - event.service_title      # "visits-service"
-          - event.kpi_title          # "Visits Created"
-          - event.itsiSeverity       # "critical"
+          - service_title     # Corrected field name reference
+          - kpi_title         # Corrected field name reference
+          - itsiSeverity      # Corrected field name reference
         once_within: "10m"
       action:
         run_job_template:
           name: StartContainer
           organization: Default
 
+    # Uncomment this rule if needed
     # - name: launch playbook when start signal received 2
     #   condition: event.payload.event_source == "Mixed alert"
     #   action:
