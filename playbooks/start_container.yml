@@ -27,4 +27,8 @@
           -Dcom.sun.management.jmxremote.authenticate=false
           -Dcom.sun.management.jmxremote.ssl=false
           -Djava.rmi.server.hostname=127.0.0.1
+     when: >
+        api_gateway_info.containers is not defined
+        or api_gateway_info.containers | length == 0
+        or api_gateway_info.containers[0].State.Status != 'running'
      become: true
