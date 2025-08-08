@@ -8,15 +8,15 @@
   rules:
 
     - name: launch playbook when start signal received 1
-      condition: event.payload.severity_label == "critical"
+      condition: event.payload.itsi_group_title == "KPI Alerts from Service: visits-service"
       action:
         run_job_template:
           name: StartContainer
           organization: Default
 
-    - name: launch playbook when start signal received 2
-      condition: event.payload.event_source == "Mixed alert"
-      action:
-        run_job_template:
-          name: StartContainer
-          organization: Default
+    # - name: launch playbook when start signal received 2
+    #   condition: event.payload.event_source == "Mixed alert"
+    #   action:
+    #     run_job_template:
+    #       name: StartContainer
+    #       organization: Default
