@@ -10,9 +10,7 @@
       condition: event.payload.title == "KPI Alerts from Service: visits-service"
       throttle:
         group_by_attributes:
-          - service_title     # Corrected field name reference
-          - kpi_title         # Corrected field name reference
-          - itsiSeverity      # Corrected field name reference
+          - event.payload.service_title     # Corrected field name reference
         once_within: "10m"
       action:
         run_job_template:
