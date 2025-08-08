@@ -1,14 +1,11 @@
 - name: Start container on webhook event
   hosts: localhost
   gather_facts: false
-
   sources:
     - ansible.eda.webhook:
         host: 0.0.0.0
         port: 5000
-
   rules:
-
     - name: launch playbook when start signal received 1
       condition: event.payload.title == "KPI Alerts from Service: visits-service"
       # throttle:
