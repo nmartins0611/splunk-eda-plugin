@@ -4,6 +4,14 @@
   gather_facts: false
   collections:
     - containers.podman
+  vars:
+    event_id: "{{ ansible_eda.event.payload.event_id }}"
+    comment_text: "Investigated – root cause fixed"
+    is_group: true
+    
+  vars_files:
+    - splunk
+    
   tasks:
     - name: Start api-gateway container
       containers.podman.podman_container:
@@ -30,6 +38,29 @@
             -Dcom.sun.management.jmxremote.ssl=false
             -Djava.rmi.server.hostname=127.0.0.1
 
-    - name: update the episode
+    # - name: update the episode
+    #   debug:
+    #     msg: "{{ ansible_eda.event.payload.event_id }}"
+
+    - name: Add comment to Splunk event
+      uri:
+        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_comment"
+        method: POST
+        user: "{{ splunk_user }}"
+        password: "{{ splunk_pass }}"
+        force_basic_auth: yes
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+        body:
+          comment: "{{ comment_text }}"
+          event_id: "{{ event_id }}"
+          is_group: "{{ is_group }}"
+        validate_certs: no  # equivalent to -k in curl
+        status_code: 200
+      register: result
+
+    - name: Show response
       debug:
-        msg: "{{ ansible_eda.event.payload.event_id }}"
+        var: result.json
+
