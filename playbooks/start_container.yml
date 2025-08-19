@@ -75,9 +75,9 @@
        return_content: yes
       register: job_info
 
-   - name: Show job elapsed time
-     debug:
-      msg: "Job {{ tower_job_id }} took {{ job_info.json.elapsed }} seconds"
+    - name: Show job elapsed time
+      debug:
+       msg: "Job {{ tower_job_id }} took {{ job_info.json.elapsed }} seconds"
 
 
 
