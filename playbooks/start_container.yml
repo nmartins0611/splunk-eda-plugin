@@ -7,6 +7,7 @@
   vars:
     event_id: "{{ ansible_eda.event.payload.event_id }}"
     comment_text: "Investigated – root cause fixed b Ansible Automation Platform job : https://18.171.172.51/execution/jobs/playbook/{{ tower_job_id }}/output"
+    target_image: "docker.io/springcommunity/spring-petclinic-api-gateway"
     is_group: true
     new_status:
     
@@ -64,16 +65,22 @@
     - name: Show response
       debug:
         var: result.json
+        
+    - name: List all containers (running and stopped) - basic format
+      become: yes
+      command: podman ps -a --external --format '{{.Image}} {{.Names}} {{.Status}}'
+      register: podman_all_basic
+      changed_when: false
 
-
-    - name: Check if desired container is running
+    - name: Parse running containers and set status
       set_fact:
         new_status: 4
       when: >
-        running_containers.containers is defined and
-        container_image in [ item.Image for item in running_containers.containers ]  
+        podman_all_basic.stdout_lines is defined and
+        podman_all_basic.stdout_lines | select('search', target_image) |
+        select('search', 'Up') | list | length > 0
 
-    - name: Update Splunk Notable Event Group Status
+    - name: Update Splunk Status
       uri:
         url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ event_id }}?is_partial_data=1"
         method: POST
