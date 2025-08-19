@@ -40,9 +40,9 @@
             -Dcom.sun.management.jmxremote.ssl=false
             -Djava.rmi.server.hostname=127.0.0.1
 
-    # - name: update the episode
-    #   debug:
-    #     msg: "{{ ansible_eda.event.payload.event_id }}"
+    - name: Event ID
+      debug:
+        msg: "{{ ansible_eda.event.payload.event_id }}"
 
     - name: Add comment to Splunk event
       uri:
