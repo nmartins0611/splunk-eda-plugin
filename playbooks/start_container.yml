@@ -9,7 +9,7 @@
     comment_text: "Investigated – root cause fixed b Ansible Automation Platform job : https://18.171.172.51/execution/jobs/playbook/{{ tower_job_id }}/output"
     target_image: "docker.io/springcommunity/spring-petclinic-api-gateway"
     is_group: true
-    new_status:
+    new_status: 4
     
   vars_files:
     - splunk
@@ -66,21 +66,21 @@
       debug:
         var: result.json
         
-    - name: List all containers (running and stopped) - basic format
-      become: yes
-      become_user: "__"
-      command: >
-        podman ps -a --external --format '{{' + '.Image' + '}} {{' + '.Names' + '}} {{' + '.Status' + '}}'
-      register: podman_all_basic
-      changed_when: false
+    # - name: List all containers (running and stopped) - basic format
+    #   become: yes
+    #   become_user: "__"
+    #   command: >
+    #     podman ps -a --external --format '{{' + '.Image' + '}} {{' + '.Names' + '}} {{' + '.Status' + '}}'
+    #   register: podman_all_basic
+    #   changed_when: false
 
-    - name: Parse running containers and set status
-      set_fact:
-        new_status: 4
-      when: >
-        podman_all_basic.stdout_lines is defined and
-        podman_all_basic.stdout_lines | select('search', target_image) |
-        select('search', 'Up') | list | length > 0
+    # - name: Parse running containers and set status
+    #   set_fact:
+    #     new_status: 4
+    #   when: >
+    #     podman_all_basic.stdout_lines is defined and
+    #     podman_all_basic.stdout_lines | select('search', target_image) |
+    #     select('search', 'Up') | list | length > 0
 
     - name: Update Splunk Status
       uri:
