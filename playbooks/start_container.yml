@@ -64,20 +64,4 @@
       debug:
         var: result.json
 
-    - name: Get job info from API
-      uri:
-       url: "https://18.171.174.51/api/v2/jobs/{{ tower_job_id }}/"
-       method: GET
-       user: "{{ admin_user }}"
-       password: "{{ admin_password }}"
-       force_basic_auth: yes
-       validate_certs: no
-       return_content: yes
-      register: job_info
-
-    - name: Show job elapsed time
-      debug:
-       msg: "Job {{ tower_job_id }} took {{ job_info.json.elapsed }} seconds"
-
-
 
