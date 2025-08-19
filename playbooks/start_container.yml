@@ -65,3 +65,27 @@
         var: result.json
 
 
+    - name: Check if desired container is running
+      set_fact:
+        new_status: 4
+      when: >
+        running_containers.containers is defined and
+        container_image in [ item.Image for item in running_containers.containers ]  
+
+    - name: Update Splunk Notable Event Group Status
+      uri:
+        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ event_id }}?is_partial_data=1"
+        method: POST
+        user: "{{ splunk_user }}"
+        password: "{{ splunk_pass }}"
+        force_basic_auth: yes
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          status: "{{ new_status }}"
+        validate_certs: no
+        status_code: 200
+
+
+
