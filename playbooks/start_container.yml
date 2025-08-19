@@ -8,6 +8,7 @@
     event_id: "{{ ansible_eda.event.payload.event_id }}"
     comment_text: "Investigated – root cause fixed b Ansible Automation Platform job : https://18.171.172.51/execution/jobs/playbook/{{ tower_job_id }}/output"
     is_group: true
+    new_status:
     
   vars_files:
     - splunk
