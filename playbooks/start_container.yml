@@ -6,7 +6,7 @@
     - containers.podman
   vars:
     event_id: "{{ ansible_eda.event.payload.event_id }}"
-    comment_text: "Investigated – root cause fixed b Ansible Automation Platform"
+    comment_text: "Investigated – root cause fixed b Ansible Automation Platform job : https://18.171.172.51/execution/jobs/playbook/{{ tower_job_id }}/output"
     is_group: true
     
   vars_files:
@@ -63,4 +63,21 @@
     - name: Show response
       debug:
         var: result.json
+
+    - name: Get job info from API
+      uri:
+       url: "https://18.171.174.51/api/v2/jobs/{{ tower_job_id }}/"
+       method: GET
+       user: "{{ admin_user }}"
+       password: "{{ admin_password }}"
+       force_basic_auth: yes
+       validate_certs: no
+       return_content: yes
+     register: job_info
+
+   - name: Show job elapsed time
+     debug:
+      msg: "Job {{ tower_job_id }} took {{ job_info.json.elapsed }} seconds"
+
+
 
