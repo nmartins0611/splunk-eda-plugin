@@ -68,7 +68,9 @@
         
     - name: List all containers (running and stopped) - basic format
       become: yes
-      command: podman ps -a --external --format '{{.Image}} {{.Names}} {{.Status}}'
+      become_user: "__"
+      command: >
+        podman ps -a --external --format '{{' + '.Image' + '}} {{' + '.Names' + '}} {{' + '.Status' + '}}'
       register: podman_all_basic
       changed_when: false
 
