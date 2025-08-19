@@ -33,6 +33,6 @@
         or api_gateway_info.containers[0].State.Status != 'running'
      become: true
 
-  - name: update the episode
-    debug:
+   - name: update the episode
+     debug:
       msg: "{{ ansible_eda.event.payload.number.event_id }}"
