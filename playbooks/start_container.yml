@@ -48,7 +48,7 @@
 
     - name: Add comment to Splunk ITSI Episode
       uri:
-        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/itoa_interface/episode_action/{{ itsi_group_id }}" 
+        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/itoa_interface/episode_action/{{ episode_id }}" 
         method: POST
         user: "{{ splunk_user }}"
         password: "{{ splunk_pass }}"
