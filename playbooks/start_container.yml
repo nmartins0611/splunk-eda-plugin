@@ -46,27 +46,27 @@
         msg: "{{ ansible_eda.event.payload.event_id }}"
 
 
-    - name: Add comment to Splunk ITSI Episode
-      uri:
-      #  url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/itoa_interface/episode_action/{{ episode_id }}" 
-        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}/comment"
-        method: POST
-        user: "{{ splunk_user }}"
-        password: "{{ splunk_pass }}"
-        force_basic_auth: yes
-        validate_certs: no
-        headers:
-          Content-Type: "application/json"
-        body_format: json
-        body:  
-          action: "add_comment"
-          comment: "{{ comment_text }}"
-        status_code: 200
-      register: result
+    # - name: Add comment to Splunk ITSI Episode
+    #   uri:
+    #   #  url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/itoa_interface/episode_action/{{ episode_id }}" 
+    #     url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}/comment"
+    #     method: POST
+    #     user: "{{ splunk_user }}"
+    #     password: "{{ splunk_pass }}"
+    #     force_basic_auth: yes
+    #     validate_certs: no
+    #     headers:
+    #       Content-Type: "application/json"
+    #     body_format: json
+    #     body:  
+    #       action: "add_comment"
+    #       comment: "{{ comment_text }}"
+    #     status_code: 200
+    #   register: result
        
-    - name: Show response
-      debug:
-        var: result.json
+    # - name: Show response
+    #   debug:
+    #     var: result.json
 
 ## - ADD Container Check ?
 
