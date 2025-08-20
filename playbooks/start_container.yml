@@ -45,24 +45,24 @@
       debug:
         msg: "{{ ansible_eda.event.payload.event_id }}"
 
-    - name: Add comment to Splunk event
+
+    - name: Add comment to Splunk ITSI Episode
       uri:
-        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_comment"
+        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/itoa_interface/episode_action/{{ itsi_group_id }}" 
         method: POST
         user: "{{ splunk_user }}"
         password: "{{ splunk_pass }}"
         force_basic_auth: yes
-        body_format: json
+        validate_certs: no
         headers:
           Content-Type: "application/json"
-        body:
+        body_format: json
+        body:  
+          action: "add_comment"
           comment: "{{ comment_text }}"
-          event_id: "{{ event_id }}"
-          is_group: "{{ is_group }}"
-        validate_certs: no  # equivalent to -k in curl
         status_code: 200
       register: result
-
+       
     - name: Show response
       debug:
         var: result.json
