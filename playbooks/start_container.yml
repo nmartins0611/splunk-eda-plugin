@@ -43,6 +43,15 @@
     - name: Event ID
       debug:
         msg: "{{ ansible_eda.event.payload.event_id }}"
+        
+    - name: Check if episode exists
+      uri:
+       url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
+       method: GET
+       user: "{{ splunk_user }}"
+       password: "{{ splunk_pass }}"
+       force_basic_auth: yes
+       validate_certs: no
 
     - name: Add comment to Splunk notable event
       uri:
