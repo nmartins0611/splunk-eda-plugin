@@ -53,6 +53,21 @@
        force_basic_auth: yes
        validate_certs: no
 
+    # - name: Set Job ID 
+    #   set_fact:
+    #    template_run: "{{ tower_job_id }}"
+
+    # - name: "Query AAP API for Job #{{ tower_job_id }} details"
+    #   ansible.builtin.uri:
+    #     url: "https://{{ controller_host }}/api/v2/jobs/{{ tower_job_id }}/"
+    #     method: GET
+    #     headers:
+    #       Content-Type: "application/json"
+    #       Authorization: "Bearer {{ controller_token }}"
+    #     validate_certs: false  # Change to 'true' in a production environment with valid certs
+    #     status_code: 200
+    #   register: job_details_result
+
     - name: Add comment to Splunk notable event
       uri:
         url: https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_comment
@@ -80,7 +95,7 @@
         url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
         method: POST
         user: "{{ splunk_user }}"
-        password: "{{ splunk_password }}"
+        password: "{{ splunk_pass }}"
         force_basic_auth: yes
         body:
           status: 4
