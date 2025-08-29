@@ -65,7 +65,7 @@
           Content-Type: application/json
         body_format: json
         body:
-          comment: "Investigated – root cause fixed"
+          comment: "{{ comment_text }}"
           event_id: "{{ episode_id }}"
           is_group: true
         status_code: 200
@@ -75,17 +75,15 @@
       debug:
         var: comment_response.json
 
-    - name: Update Splunk Status
-      uri:
-        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}?is_partial_data=1"
+    - name: Set episode status to Resolved
+      ansible.builtin.uri:
+        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
         method: POST
         user: "{{ splunk_user }}"
-        password: "{{ splunk_pass }}"
+        password: "{{ splunk_password }}"
         force_basic_auth: yes
-        headers:
-          Content-Type: "application/json"
-        body_format: json
         body:
-          status: "{{ new_status }}"
-        validate_certs: no
+          status: 4
+        body_format: json
+        validate_certs: false
         status_code: 200
