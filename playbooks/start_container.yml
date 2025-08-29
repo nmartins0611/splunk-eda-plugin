@@ -15,6 +15,13 @@
     - splunk
     
   tasks:
+
+    - name: Set current Job ID as a custom stat
+      ansible.builtin.set_stats:
+       data:
+        current_job_id: "{{ tower_job_id }}"
+      run_once: true
+
     - name: Start api-gateway container
       containers.podman.podman_container:
         name: api-gateway
