@@ -48,80 +48,53 @@
             -Dcom.sun.management.jmxremote.ssl=false
             -Djava.rmi.server.hostname=127.0.0.1
 
-    - name: Event ID
-      debug:
-        msg: "{{ ansible_eda.event.payload.event_id }}"
+    # - name: Event ID
+    #   debug:
+    #     msg: "{{ ansible_eda.event.payload.event_id }}"
         
-    - name: Check if episode exists
-      uri:
-       url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
-       method: GET
-       user: "{{ splunk_user }}"
-       password: "{{ splunk_pass }}"
-       force_basic_auth: yes
-       validate_certs: no
+    # - name: Check if episode exists
+    #   uri:
+    #    url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
+    #    method: GET
+    #    user: "{{ splunk_user }}"
+    #    password: "{{ splunk_pass }}"
+    #    force_basic_auth: yes
+    #    validate_certs: no
 
-    # - name: Set Job ID 
-    #   set_fact:
-    #    template_run: "{{ tower_job_id }}"
 
-    # - name: "Query AAP API for Job #{{ tower_job_id }} details"
-    #   ansible.builtin.uri:
-    #     url: "https://{{ controller_host }}/api/v2/jobs/{{ tower_job_id }}/"
-    #     method: GET
+    # - name: Add comment to Splunk notable event
+    #   uri:
+    #     url: https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_comment
+    #     method: POST
+    #     user: "{{ splunk_user }}"
+    #     password: "{{ splunk_pass }}"
+    #     force_basic_auth: yes
+    #     validate_certs: no
     #     headers:
-    #       Content-Type: "application/json"
-    #       Authorization: "Bearer {{ controller_token }}"
-    #     validate_certs: false  # Change to 'true' in a production environment with valid certs
+    #       Content-Type: application/json
+    #     body_format: json
+    #     body:
+    #       comment: "{{ comment_text }}"
+    #       event_id: "{{ episode_id }}"
+    #       is_group: true
     #     status_code: 200
-    #   register: job_details_result
+    #   register: comment_response
 
-    - name: Add comment to Splunk notable event
-      uri:
-        url: https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_comment
-        method: POST
-        user: "{{ splunk_user }}"
-        password: "{{ splunk_pass }}"
-        force_basic_auth: yes
-        validate_certs: no
-        headers:
-          Content-Type: application/json
-        body_format: json
-        body:
-          comment: "{{ comment_text }}"
-          event_id: "{{ episode_id }}"
-          is_group: true
-        status_code: 200
-      register: comment_response
+    # - name: Display comment response
+    #   debug:
+    #     var: comment_response.json
 
-    - name: Display comment response
-      debug:
-        var: comment_response.json
-
-    - name: Set episode status to Resolved
-      ansible.builtin.uri:
-        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
-        method: POST
-        user: "{{ splunk_user }}"
-        password: "{{ splunk_pass }}"
-        force_basic_auth: yes
-        body:
-          status: 4
-        body_format: json
-        validate_certs: false
-        status_code: 200
-
-    # - name: "Get job details from AAP"
+    # - name: Set episode status to Resolved
     #   ansible.builtin.uri:
-    #     url: "https://{{ localhost }}/api/v2/jobs/{{ current_job_id }}/"
-    #     method: GET
-    #     headers:
-    #       Content-Type: "application/json"
-    #       Authorization: "Bearer {{ controller_token }}"
-    #     validate_certs: false 
+    #     url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
+    #     method: POST
+    #     user: "{{ splunk_user }}"
+    #     password: "{{ splunk_pass }}"
+    #     force_basic_auth: yes
+    #     body:
+    #       status: 4
+    #     body_format: json
+    #     validate_certs: false
     #     status_code: 200
-    # #   register: job_details_result
 
-    # # - name: Display Job Details
-    # #   debug:
-    #     var: job_details_result
+  
