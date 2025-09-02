@@ -24,6 +24,12 @@
         current_job_id: "{{ tower_job_id }}"
       run_once: true
 
+    - name: Set Persistent Episode details
+      ansible.builtin.set_stats:
+       data:
+        episode_id: "{{ ansible_eda.event.payload.itsi_group_id }}"
+      run_once: true
+
     - name: Start api-gateway container
       containers.podman.podman_container:
         name: api-gateway
