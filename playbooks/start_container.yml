@@ -11,6 +11,7 @@
     is_group: true
     new_status: 4
     controller_token: KeidQrFmVGYe0VBmAYopx8rMOSqMSD
+    controller_host: localhost
     
   vars_files:
     - splunk
