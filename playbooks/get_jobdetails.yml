@@ -7,6 +7,7 @@
     event_id: "{{ ansible_eda.event.payload.event_id }}"
     episode_id: "{{ ansible_eda.event.payload.itsi_group_id }}"
     target_image: "docker.io/springcommunity/spring-petclinic-api-gateway"
+    controller_host: localhost
     is_group: true
     new_status: 4
     controller_token: KeidQrFmVGYe0VBmAYopx8rMOSqMSD
