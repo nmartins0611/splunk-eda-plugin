@@ -113,7 +113,7 @@
 
     - name: "Get job details from AAP"
       ansible.builtin.uri:
-        url: "https://{{ controller_host }}/api/v2/jobs/{{ current_job_id }}/"
+        url: "https://{{ localhost }}/api/v2/jobs/{{ current_job_id }}/"
         method: GET
         headers:
           Content-Type: "application/json"
