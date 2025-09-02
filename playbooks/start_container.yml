@@ -10,6 +10,7 @@
     target_image: "docker.io/springcommunity/spring-petclinic-api-gateway"
     is_group: true
     new_status: 4
+    controller_token: KeidQrFmVGYe0VBmAYopx8rMOSqMSD
     
   vars_files:
     - splunk
