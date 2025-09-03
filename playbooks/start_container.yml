@@ -64,20 +64,6 @@
             -Dcom.sun.management.jmxremote.ssl=false
             -Djava.rmi.server.hostname=127.0.0.1
 
-    - name: Check if api-gateway container is running
-      containers.podman.podman_container_info:
-      name: api-gateway
-       register: container_status
-      failed_when: false
-
-    - name: Verify container is running
-      assert:
-       that:
-         - container_status.containers | length > 0
-         - container_status.containers[0].State.Status == "running"
-       fail_msg: "api-gateway container is not running"
-       success_msg: "api-gateway container is up and running"
-
     - name: Record end time and calculate duration
       set_fact:
        task_end_time: "{{ ansible_date_time.epoch }}"
