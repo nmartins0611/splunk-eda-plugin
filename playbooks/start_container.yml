@@ -83,66 +83,48 @@
        task_end_time: "{{ ansible_date_time.epoch }}"
        task_duration: "{{ ansible_date_time.epoch | int - task_start_time | int }}"
         
-    - name: Check if episode exists
-      uri:
-       url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
-       method: GET
-       user: "{{ splunk_user }}"
-       password: "{{ splunk_pass }}"
-       force_basic_auth: yes
-       validate_certs: no
+    # - name: Check if episode exists
+    #   uri:
+    #    url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
+    #    method: GET
+    #    user: "{{ splunk_user }}"
+    #    password: "{{ splunk_pass }}"
+    #    force_basic_auth: yes
+    #    validate_certs: no
 
-
-    # - name: "Get job details from AAP"
-    #   ansible.builtin.uri:
-    #     url: "https://{{ controller_host }}/api/v2/jobs/{{ current_job_id }}/"
-    #     method: GET
+    # - name: Add comment to Splunk notable event
+    #   uri:
+    #     url: https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_comment
+    #     method: POST
+    #     user: "{{ splunk_user }}"
+    #     password: "{{ splunk_pass }}"
+    #     force_basic_auth: yes
+    #     validate_certs: no
     #     headers:
-    #       Content-Type: "application/json"
-    #       Authorization: "Bearer {{ controller_token }}"
-    #     validate_certs: false 
+    #       Content-Type: application/json
+    #     body_format: json
+    #     body:
+    #       comment: "{{ comment_text }}"
+    #       event_id: "{{ episode_id }}"
+    #       is_group: true
     #     status_code: 200
-    #   register: job_details_result
+    #   register: comment_response
 
-      
-    # - name: Job Details
+    # - name: Display comment response
     #   debug:
-    #     msg: "{{ job_details_result }}"
+    #     var: comment_response.json
 
-
-    - name: Add comment to Splunk notable event
-      uri:
-        url: https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_comment
-        method: POST
-        user: "{{ splunk_user }}"
-        password: "{{ splunk_pass }}"
-        force_basic_auth: yes
-        validate_certs: no
-        headers:
-          Content-Type: application/json
-        body_format: json
-        body:
-          comment: "{{ comment_text }}"
-          event_id: "{{ episode_id }}"
-          is_group: true
-        status_code: 200
-      register: comment_response
-
-    - name: Display comment response
-      debug:
-        var: comment_response.json
-
-    - name: Set episode status to Resolved
-      ansible.builtin.uri:
-        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
-        method: POST
-        user: "{{ splunk_user }}"
-        password: "{{ splunk_pass }}"
-        force_basic_auth: yes
-        body:
-          status: 4
-        body_format: json
-        validate_certs: false
-        status_code: 200
+    # - name: Set episode status to Resolved
+    #   ansible.builtin.uri:
+    #     url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
+    #     method: POST
+    #     user: "{{ splunk_user }}"
+    #     password: "{{ splunk_pass }}"
+    #     force_basic_auth: yes
+    #     body:
+    #       status: 4
+    #     body_format: json
+    #     validate_certs: false
+    #     status_code: 200
 
   
