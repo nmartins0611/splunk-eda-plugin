@@ -1,0 +1,12 @@
+---
+- name: Stop the api-gateway container
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: true  
+
+  tasks:
+    - name: Ensure the api-gateway container is stopped
+      containers.podman.podman_container:
+        name: api-gateway
+        state: stopped
