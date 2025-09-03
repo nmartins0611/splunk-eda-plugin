@@ -25,7 +25,7 @@
 
     - name: Convert time of incident
       ansible.builtin.set_fact:
-        start_time_readable: "{{  splunk_event_time | to_datetime }}"
+        start_time_readable: "{{ splunk_event_time | float | to_datetime }}"
         
     - name: Start Simple Metric ## Instead of API request to AAP
       set_fact:
