@@ -22,12 +22,11 @@
     
   tasks:
 
-    - name: Start Simple Metric
+    - name: Start Simple Metric ## Instead of API request to AAP
       set_fact:
-        task_start_time: "{{ ansible_date_time.epoch }}"
+        task_start_time: "{{ lookup('pipe', 'date +%s') }}"
 
-
-    - name: Set current Job ID as a custom stat
+    - name: Set current Job ID as a custom stat ## For potential workflow setup 
       ansible.builtin.set_stats:
        data:
         current_job_id: "{{ tower_job_id }}"
@@ -63,11 +62,11 @@
             -Dcom.sun.management.jmxremote.authenticate=false
             -Dcom.sun.management.jmxremote.ssl=false
             -Djava.rmi.server.hostname=127.0.0.1
-
+            
     - name: Record end time and calculate duration
       set_fact:
-       task_end_time: "{{ ansible_date_time.epoch }}"
-       task_duration: "{{ ansible_date_time.epoch | int - task_start_time | int }}"
+        task_end_time: "{{ lookup('pipe', 'date +%s') }}"
+        task_duration: "{{ lookup('pipe', 'date +%s') | int - task_start_time | int }}"
 
     - name: print task time
       debug:
