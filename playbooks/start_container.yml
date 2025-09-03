@@ -68,6 +68,10 @@
       set_fact:
        task_end_time: "{{ ansible_date_time.epoch }}"
        task_duration: "{{ ansible_date_time.epoch | int - task_start_time | int }}"
+
+    - name: print task time
+      debug:
+        msg : "{{ task_duration }}"
         
     - name: Check if episode exists
       uri:
