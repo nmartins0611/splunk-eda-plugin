@@ -15,6 +15,7 @@
           Investigated – root cause fixed by Ansible Automation Platform job: 
           https://ec2-18-171-172-51.eu-west-2.compute.amazonaws.com/execution/jobs/playbook/{{ tower_job_id }}/output 
           Ansible Remediation job took {{ task_duration }} seconds
+          Api-Gateway service restored
     
     
   vars_files:
