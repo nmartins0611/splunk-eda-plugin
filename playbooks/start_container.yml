@@ -10,18 +10,23 @@
     target_image: "docker.io/springcommunity/spring-petclinic-api-gateway"
     is_group: true
     new_status: 4
-    controller_token: KeidQrFmVGYe0VBmAYopx8rMOSqMSD
-    controller_host: localhost
+    splunk_event_time: "{{ ansible_eda.event.payload.start_time }}"
     comment_text: |
           Investigated – root cause fixed by Ansible Automation Platform job: 
           https://ec2-18-171-172-51.eu-west-2.compute.amazonaws.com/execution/jobs/playbook/{{ tower_job_id }}/output 
-          Ansible Remediation job took {{ task_duration }} seconds
+          Ansible Remediation job took {{ task_run_duration }} seconds
+          Total remediation time from incident {{ total_incident_duration }}
+    
     
   vars_files:
     - splunk
     
   tasks:
 
+    - name: Convert time of incident
+      ansible.builtin.set_fact:
+        start_time_readable: "{{  splunk_event_time | to_datetime }}"
+        
     - name: Start Simple Metric ## Instead of API request to AAP
       set_fact:
         task_start_time: "{{ lookup('pipe', 'date +%s') }}"
@@ -62,15 +67,26 @@
             -Dcom.sun.management.jmxremote.authenticate=false
             -Dcom.sun.management.jmxremote.ssl=false
             -Djava.rmi.server.hostname=127.0.0.1
-            
-    - name: Record end time and calculate duration
-      set_fact:
-        task_end_time: "{{ lookup('pipe', 'date +%s') }}"
-        task_duration: "{{ lookup('pipe', 'date +%s') | int - task_start_time | int }}"
 
-    - name: print task time
-      debug:
-        msg : "{{ task_duration }}"
+    - name: Record end time
+      ansible.builtin.command: date +%s.%N
+      changed_when: false
+      register: end_time_result
+
+    - name: Calculate durations
+      ansible.builtin.set_fact:
+        end_time_readable: "{{ end_time_result.stdout | to_datetime }}"
+        task_run_duration: "{{ (end_time_result.stdout | float) - (task_start_time | float) }}"
+        total_incident_duration: "{{ (end_time_result.stdout | float) - (splunk_event_time | float) }}"
+            
+    # - name: Record end time and calculate duration
+    #   set_fact:
+    #     task_end_time: "{{ lookup('pipe', 'date +%s') }}"
+    #     task_duration: "{{ lookup('pipe', 'date +%s') | int - task_start_time | int }}"
+
+    # - name: print task time
+    #   debug:
+    #     msg : "{{ task_duration }}"
         
     - name: Check if episode exists
       uri:
