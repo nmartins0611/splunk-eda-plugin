@@ -21,7 +21,7 @@
       debug:
         msg: "{{ episode_id }}"
         
-  - name: Check if episode exists
+    - name: Check if episode exists
       uri:
        url: "https://{{ splunk_host }}:{{ splunk_port }}/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{{ episode_id }}"
        method: GET
