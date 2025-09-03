@@ -1,6 +1,6 @@
 - name: Create/Start the api-gateway container
   hosts: all
-  gather_facts: false
+  gather_facts: true
   collections:
     - containers.podman
   vars:
