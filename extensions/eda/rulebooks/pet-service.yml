@@ -6,8 +6,8 @@
         host: 0.0.0.0
         port: 5000
   rules:
-    - name: launch playbook when start signal received 1
-      condition: event.payload.title is search("visits-service") 
+    - name: Api-Gateway failure detected
+      condition: event.payload.title is search("api-gateway") 
       throttle:
         group_by_attributes:
           - event.payload.service_title     # Corrected field name reference
