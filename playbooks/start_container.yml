@@ -67,16 +67,21 @@
             -Dcom.sun.management.jmxremote.ssl=false
             -Djava.rmi.server.hostname=127.0.0.1
 
-    # - name: Record end time
-    #   ansible.builtin.command: date +%s.%N
-    #   changed_when: false
-    #   register: end_time_result
+    - name: Check if the 'api-gateway' container is running
+      containers.podman.podman_container_info:
+        name: api-gateway
+      register: container_info
+      ignore_errors: true 
 
-    # - name: Calculate durations
-    #   ansible.builtin.set_fact:
-    #     end_time_readable: "{{ end_time_result.stdout | to_datetime }}"
-    #     task_run_duration: "{{ (end_time_result.stdout | float) - (task_start_time | float) }}"
-    #     total_incident_duration: "{{ (end_time_result.stdout | float) - (splunk_event_time | float) }}"
+    - name: Display container status
+      ansible.builtin.debug:
+        msg: >
+          The 'api-gateway' container is 
+          {% if container_info.containers and container_info.containers[0].State.Status == 'running' %}
+          running.
+          {% else %}
+          not running or does not exist.
+          {% endif %}
             
     - name: Record end time and calculate duration
       set_fact:
